@@ -1,5 +1,7 @@
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import authRouter from "./routes/auth.routes";
 const app: Application = express();
 
 app.use(express.json()); // inbuilt middleware to parse the json request body to req.body
@@ -10,5 +12,10 @@ app.get("/health", (req, res) => {
     status: "ok",
   });
 });
+
+app.use("/auth", authRouter);
+
+// Global error handler middleware should be the last middleware
+app.use(globalErrorHandler);
 
 export default app;
